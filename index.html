@@ -50,6 +50,7 @@
 
     .toolbar button:hover, .toolbar select:hover {
       background: #555;
+      color: white;
     }
 
     .editor {
@@ -134,9 +135,8 @@
 </head>
 <body>
   <div class="toolbar">
-    <!-- Todos os botões e seletores -->
-    <button id="boldBtn" title="Negrito"><svg width="24" height="24" viewBox="0 0 24 24"><path d="M6 4h8a4 4 0 0 1 4 4v1a4 4 0 0 1-4 4H6z"/><path d="M6 12h9a4 4 0 0 1 4 4v1a4 4 0 0 1-4 4H6z"/></svg></button>
-    <button id="italicBtn" title="Itálico"><svg width="24" height="24" viewBox="0 0 24 24"><path d="M19 4h-6l-4 16h6"/></svg></button>
+    <button id="boldBtn" title="Negrito"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M6 4h8a4 4 0 0 1 4 4v1a4 4 0 0 1-4 4H6z"/><path d="M6 12h9a4 4 0 0 1 4 4v1a4 4 0 0 1-4 4H6z"/></svg></button>
+    <button id="italicBtn" title="Itálico"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M19 4h-6l-4 16h6"/></svg></button>
     <button id="highlightBtn" title="Grifar"><svg width="24" height="24" viewBox="0 0 24 24"><path d="M4 20h16l-2-8H6z"/></svg></button>
     <button id="colorBtn" title="Cor do texto"><svg width="24" height="24" viewBox="0 0 24 24"><path d="M12 2a10 10 0 0 0-10 10h20A10 10 0 0 0 12 2z"/></svg></button>
     <select id="fontSize"><option value="12">12px</option><option value="16" selected>16px</option><option value="20">20px</option><option value="24">24px</option></select>
@@ -307,4 +307,4 @@
     editor.focus();
   </script>
 </body>
-    </html> 
+</html>
