@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editor de PDF Avançado</title>
+    <link rel="stylesheet" href="/styles.css">
+    <!-- Carregando fontes do Google Fonts, incluindo VT323 -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&family=Open+Sans&family=Lato&family=VT323&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="toolbar">
+       <!-- Botão de expansão (somente mobile) -->
+        <button id="boldBtn" title="Negrito">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path d="M6 4h8a4 4 0 0 1 4 4v1a4 4 0 0 1-4 4H6z" />
+                <path d="M6 12h9a4 4 0 0 1 4 4v1a4 4 0 0 1-4 4H6z" />
+            </svg>
+        </button>
+        <button id="italicBtn" title="Itálico">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path d="M19 4h-6l-4 16h6" />
+            </svg>
+        </button>
+        <button id="highlightBtn" title="Grifar">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path d="M4 20h16l-2-8H6z" />
+            </svg>
+        </button>
+        <button id="colorBtn" title="Cor do texto">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path d="M12 2a10 10 0 0 0-10 10h20A10 10 0 0 0 12 2z" />
+            </svg>
+        </button>
+        <select id="fontSize" title="Tamanho da fonte">
+            <option value="12">12px</option>
+            <option value="16" selected>16px</option>
+            <option value="20">20px</option>
+            <option value="24">24px</option>
+        </select>
+        <select id="fontFamily" title="Fonte">
+            <option value="Arial">Arial</option>
+            <option value="Times New Roman">Times New Roman</option>
+            <option value="Courier New">Courier New</option>
+            <option value="Georgia">Georgia</option>
+            <option value="Verdana">Verdana</option>
+            <option value="Helvetica">Helvetica</option>
+            <option value="Trebuchet MS">Trebuchet MS</option>
+            <option value="Comic Sans MS">Comic Sans MS</option>
+            <option value="Impact">Impact</option>
+            <option value="Roboto">Roboto</option>
+            <option value="Open Sans">Open Sans</option>
+            <option value="Lato">Lato</option>
+            <option value="VT323">VT323</option> <!-- Adicionada a fonte VT323 -->
+        </select>
+        <button id="linkBtn" title="Adicionar link">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" />
+                <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" />
+            </svg>
+        </button>
+        <button id="tableBtn" title="Adicionar tabela">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <rect x="3" y="3" width="18" height="18" rx="2" />
+                <line x1="12" y1="3" x2="12" y2="21" />
+                <line x1="3" y1="12" x2="21" y2="12" />
+            </svg>
+        </button>
+        <button id="textboxBtn" title="Adicionar caixa de texto">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <rect x="3" y="3" width="18" height="18" rx="2" />
+                <line x1="8" y1="8" x2="16" y2="8" />
+                <line x1="8" y1="12" x2="16" y2="12" />
+            </svg>
+        </button>
+        <button id="imageBtn" title="Inserir imagem">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <rect x="3" y="3" width="18" height="18" rx="2" />
+                <circle cx="8.5" cy="8.5" r="1.5" />
+                <path d="M21 15l-5-5L5 21" />
+            </svg>
+        </button>
+        <select id="pageSize" title="Tamanho da folha">
+            <option value="a4">A4</option>
+            <option value="letter">Letter</option>
+            <option value="legal">Legal</option>
+        </select>
+        <button id="downloadBtn" title="Baixar PDF">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                <polyline points="7 10 12 15 17 10" />
+                <line x1="12" y1="15" x2="12" y2="3" />
+            </svg>
+        </button>
+        <button id="shareBtn" title="Compartilhar PDF">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8" />
+                <polyline points="16 6 12 2 8 6" />
+                <line x1="12" y1="2" x2="12" y2="15" />
+            </svg>
+        </button>
+        <button id="toggleToolbar" class="toggle-toolbar" title="Expandir/Encolher Barra">
+   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+      <path d="M4 6h16M4 12h16M4 18h16" />
+   </svg>
+</button>
+    </div>
+    <div contenteditable="true" id="editor" class="editor"></div>
+    <input type="file" id="imageInput" accept="image/*" style="display: none;">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.23/jspdf.plugin.autotable.min.js"></script>
+    <script src="script.js"></script>
+    <script src="/botão.js"></script> 
+</body>
+</html>

@@ -1,0 +1,169 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    overflow-x: hidden;
+    
+}
+
+.toolbar {
+    position: fixed;
+    top: 8px; /* Afastamento de 8px da borda superior */
+    left: 10px; /* Afastamento de 10px da borda esquerda */
+    right: 10px; /* Afastamento de 10px da borda direita */
+    background: #333;
+    padding: 5px;
+    display: flex;
+    flex-wrap: wrap; /* Permite que os botões quebrem linha em telas pequenas */
+    gap: 5px; /* Reduzido para telas menores */
+    z-index: 1000;
+    justify-content: center; /* Centraliza os botões */
+    border-radius: 8px; /* Cantos arredondados */
+}
+
+.toolbar button, .toolbar select {
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+    padding: 5px;
+    transition: background 0.3s;
+    min-width: 30px; /* Garante que os botões sejam clicáveis em telas pequenas */
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.toolbar select {
+    background: #555;
+    border-radius: 4px; /* Mantém cantos arredondados no select */
+    padding: 2px;
+    font-size: 12px; /* Tamanho ajustado para mobile */
+    height: 30px;
+}
+
+.toolbar button:hover, .toolbar select:hover {
+    background: #555;
+}
+
+.editor {
+    margin-top: 58px; /* Ajustado para o novo afastamento de 8px + altura da toolbar */
+    padding: 10px; /* Ajustado para mobile */
+    min-height: calc(100vh - 68px); /* Ajustado para o novo afastamento */
+    border: 1px solid #ccc;
+    outline: none;
+    white-space: pre-wrap;
+    font-size: 16px; /* Tamanho base para legibilidade */
+    box-sizing: border-box;
+}
+
+.highlight {
+    background-color: #00FF08A1;
+}
+
+.textbox {
+    border: 1px solid #000;
+    padding: 8px;
+    display: inline-block;
+    min-width: 80px; /* Ajustado para mobile */
+    min-height: 40px;
+    box-sizing: border-box;
+}
+
+table {
+    border-collapse: collapse;
+    margin: 10px 0;
+    width: 100%; /* Garante que a tabela se ajuste à largura do editor */
+}
+
+td {
+    border: 1px solid #000;
+    padding: 5px;
+    min-width: 40px; /* Ajustado para mobile */
+    box-sizing: border-box;
+}
+
+/* Media Queries para dispositivos móveis */
+@media (max-width: 768px) {
+    .toolbar {
+        padding: 3px;
+        gap: 3px;
+        flex-wrap: wrap; /* Garante que os botões se ajustem */
+        top: 790px; /* Mantém o afastamento de 8px da borda superior */
+        left: 10px; /* Mantém o afastamento de 10px */
+        right: 10px; /* Mantém o afastamento de 10px */
+        border-radius: 8px; /* Mantém os cantos arredondados */
+    }
+
+    .toolbar button, .toolbar select {
+        padding: 1px;
+        min-width: 4px;
+        height: 25px;
+    }
+
+    .toolbar select {
+        font-size: 10px;
+        max-width: 33px; /* Limita a largura do select em mobile */
+    }
+
+    .editor {
+        margin-top: 78px; /* Ajustado para o afastamento de 8px + altura da toolbar em mobile */
+        padding: 8px;
+        font-size: 14px; /* Reduz o texto para mobile */
+        min-height: calc(100vh - 88px); /* Ajustado para mobile */
+    }
+
+    .textbox {
+        min-width: 60px;
+        min-height: 30px;
+        padding: 5px;
+    }
+
+    td {
+        min-width: 30px;
+        padding: 3px;
+    }
+}
+
+/* Media Queries para notebooks/desktops (acima de 768px) */
+@media (min-width: 769px) {
+    .toolbar {
+        padding: 10px;
+        gap: 10px;
+        flex-wrap: nowrap; /* Mantém os botões em uma linha */
+        top: 8px; /* Mantém o afastamento de 8px da borda superior */
+        left: 10px; /* Mantém o afastamento de 10px */
+        right: 10px; /* Mantém o afastamento de 10px */
+        border-radius: 8px; /* Mantém os cantos arredondados */
+    }
+
+    .toolbar button, .toolbar select {
+        padding: 5px;
+        min-width: 30px;
+        height: 30px;
+    }
+
+    .toolbar select {
+        font-size: 12px;
+        max-width: none; /* Remove limite de largura */
+    }
+
+    .editor {
+        margin-top: 68px; /* Ajustado para o afastamento de 8px + altura da toolbar */
+        padding: 20px;
+        font-size: 16px;
+    }
+
+    .textbox {
+        min-width: 100px;
+        min-height: 50px;
+        padding: 10px;
+    }
+
+    td {
+        min-width: 50px;
+        padding: 5px;
+    }
+}
+
+
