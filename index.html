@@ -6,6 +6,7 @@
     <title>Hayd.editorPDF</title>
     <!-- Carregando fontes do Google Fonts, incluindo VT323 -->
     <link href="https://fonts.googleapis.com/css2?family=Roboto&family=Open+Sans&family=Lato&family=VT323&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" href="/Screenshot_20250411-180805-414.png ">
     <style>
        body {
     margin: 0;
@@ -34,9 +35,9 @@
     border: none;
     color: white;
     cursor: pointer;
-    padding: 5px;
+    padding: 3px;
     transition: background 0.3s;
-    min-width: 30px; /* Garante que os botões sejam clicáveis em telas pequenas */
+    min-width: 35px; /* Garante que os botões sejam clicáveis em telas pequenas */
     height: 30px;
     display: flex;
     align-items: center;
@@ -101,24 +102,26 @@ td {
         top: 7px; /* Mantém o afastamento de 8px da borda superior */
         left: 10px; /* Mantém o afastamento de 10px */
         right: 10px; /* Mantém o afastamento de 10px */
-        border-radius: 8px; /* Mantém os cantos arredondados */
+        border-radius: 9px; /* Mantém os cantos arredondados */
     }
 
     .toolbar button, .toolbar select {
         padding: 1px;
-        min-width: 4px;
-        height: 25px;
+        min-width: 1px;
+        height: 30px;
+        width: 25px
     }
 
     .toolbar select {
-        font-size: 10px;
-        max-width: 33px; /* Limita a largura do select em mobile */
+        font-size: 8px;
+        max-width: 83px; /* Limita a largura do select em mobile */
+        background-color: #242424E6;
     }
 
     .editor {
         margin-top: 64px; /* Ajustado para o afastamento de 8px + altura da toolbar em mobile */
         padding: 8px;
-        font-size: 14px; /* Reduz o texto para mobile */
+        font-size: 15px; /* Reduz o texto para mobile */
         min-height: calc(100vh - 88px); /* Ajustado para mobile */
     }
 
@@ -286,9 +289,16 @@ td {
                 <line x1="12" y1="2" x2="12" y2="15" />
             </svg>
         </button>
-        <button id="toggleToolbar" class="toggle-toolbar" title="Expandir/Encolher Barra">
+        <button id="undoBtn" title="Desfazer">
    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-      <path d="M4 6h16M4 12h16M4 18h16" />
+      <path d="M3 9h10a6 6 0 0 1 6 6v0a6 6 0 0 1-6 6H9" />
+      <path d="M3 9L7 5M3 9L7 13" />
+   </svg>
+</button>
+<button id="redoBtn" title="Refazer">
+   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+      <path d="M21 9H11a6 6 0 0 0-6 6v0a6 6 0 0 0 6 6h4" />
+      <path d="M21 9L17 5M21 9L17 13" />
    </svg>
 </button>
     </div>
@@ -313,6 +323,11 @@ const pageSize = document.getElementById('pageSize');
 const downloadBtn = document.getElementById('downloadBtn');
 const shareBtn = document.getElementById('shareBtn');
 const imageInput = document.getElementById('imageInput');
+const undoBtn = document.getElementById('undoBtn');
+const redoBtn = document.getElementById('redoBtn');
+
+undoBtn.onclick = () => document.execCommand('undo', false, null);
+redoBtn.onclick = () => document.execCommand('redo', false, null);
 
 // Funções de formatação
 boldBtn.onclick = () => document.execCommand('bold', false, null);
@@ -443,4 +458,4 @@ shareBtn.onclick = () => generatePDF('share');
 
     </script>
 </body>
-  </html> 
+    </html> 
