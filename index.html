@@ -1,252 +1,387 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Editor de PDF Avançado</title>
-  <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      overflow-x: hidden;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hayd.editorPDF</title>
+    <!-- Carregando fontes do Google Fonts, incluindo VT323 -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&family=Open+Sans&family=Lato&family=VT323&display=swap" rel="stylesheet">
+    <style>
+       body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    overflow-x: hidden;
+    
+}
 
+.toolbar {
+    position: fixed;
+    top: 3px; /* Afastamento de 8px da borda superior */
+    left: 10px; /* Afastamento de 10px da borda esquerda */
+    right: 10px; /* Afastamento de 10px da borda direita */
+    background: #333;
+    padding: 5px;
+    display: flex;
+    flex-wrap: wrap; /* Permite que os botões quebrem linha em telas pequenas */
+    gap: 5px; /* Reduzido para telas menores */
+    z-index: 1000;
+    justify-content: center; /* Centraliza os botões */
+    border-radius: 8px; /* Cantos arredondados */
+}
+
+.toolbar button, .toolbar select {
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+    padding: 5px;
+    transition: background 0.3s;
+    min-width: 30px; /* Garante que os botões sejam clicáveis em telas pequenas */
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.toolbar select {
+    background: #555;
+    border-radius: 4px; /* Mantém cantos arredondados no select */
+    padding: 2px;
+    font-size: 12px; /* Tamanho ajustado para mobile */
+    height: 30px;
+}
+
+.toolbar button:hover, .toolbar select:hover {
+    background: #555;
+}
+
+.editor {
+    margin-top: 58px; /* Ajustado para o novo afastamento de 8px + altura da toolbar */
+    padding: 10px; /* Ajustado para mobile */
+    min-height: calc(100vh - 68px); /* Ajustado para o novo afastamento */
+    border: 1px solid #333333;
+    outline: none;
+    white-space: pre-wrap;
+    font-size: 16px; /* Tamanho base para legibilidade */
+    box-sizing: border-box;
+}
+
+.highlight {
+    background-color: #00FF08A1;
+}
+
+.textbox {
+    border: 1px solid #000000;
+    padding: 8px;
+    display: inline-block;
+    min-width: 80px; /* Ajustado para mobile */
+    min-height: 40px;
+    box-sizing: border-box;
+}
+
+table {
+    border-collapse: collapse;
+    margin: 10px 0;
+    width: 100%; /* Garante que a tabela se ajuste à largura do editor */
+}
+
+td {
+    border: 1px solid #000;
+    padding: 5px;
+    min-width: 40px; /* Ajustado para mobile */
+    box-sizing: border-box;
+}
+
+/* Media Queries para dispositivos móveis */
+@media (max-width: 768px) {
     .toolbar {
-      position: fixed;
-      top: 8px;
-      left: 10px;
-      right: 10px;
-      background: #333;
-      padding: 10px;
-      display: flex;
-      flex-wrap: nowrap;
-      gap: 10px;
-      z-index: 1000;
-      justify-content: center;
-      border-radius: 8px;
+        padding: 3px;
+        gap: 3px;
+        flex-wrap: wrap; /* Garante que os botões se ajustem */
+        top: 7px; /* Mantém o afastamento de 8px da borda superior */
+        left: 10px; /* Mantém o afastamento de 10px */
+        right: 10px; /* Mantém o afastamento de 10px */
+        border-radius: 8px; /* Mantém os cantos arredondados */
     }
 
     .toolbar button, .toolbar select {
-      background: none;
-      border: none;
-      color: white;
-      cursor: pointer;
-      padding: 5px;
-      transition: background 0.3s;
-      min-width: 30px;
-      height: 30px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .toolbar select {
-      background: #555;
-      border-radius: 4px;
-      padding: 2px;
-      font-size: 12px;
-      height: 30px;
-    }
-
-    .toolbar button:hover, .toolbar select:hover {
-      background: #555;
-      color: white;
-    }
-
-    .editor {
-      margin-top: 68px;
-      padding: 20px;
-      min-height: calc(100vh - 88px);
-      border: 1px solid #ccc;
-      outline: none;
-      white-space: pre-wrap;
-      font-size: 16px;
-      box-sizing: border-box;
-    }
-
-    .highlight {
-      background-color: #00FF08A1;
-    }
-
-    .textbox {
-      border: 1px solid #000;
-      padding: 10px;
-      display: inline-block;
-      min-width: 100px;
-      min-height: 50px;
-      box-sizing: border-box;
-    }
-
-    table {
-      border-collapse: collapse;
-      margin: 10px 0;
-      width: 100%;
-    }
-
-    td {
-      border: 1px solid #000;
-      padding: 5px;
-      min-width: 50px;
-      box-sizing: border-box;
-    }
-
-    @media (max-width: 768px) {
-      .toolbar {
-        padding: 3px;
-        gap: 3px;
-        flex-wrap: wrap;
-        top: 790px;
-        left: 10px;
-        right: 10px;
-        border-radius: 8px;
-      }
-
-      .toolbar button, .toolbar select {
         padding: 1px;
         min-width: 4px;
         height: 25px;
-      }
+    }
 
-      .toolbar select {
+    .toolbar select {
         font-size: 10px;
-        max-width: 33px;
-      }
+        max-width: 33px; /* Limita a largura do select em mobile */
+    }
 
-      .editor {
-        margin-top: 78px;
+    .editor {
+        margin-top: 64px; /* Ajustado para o afastamento de 8px + altura da toolbar em mobile */
         padding: 8px;
-        font-size: 14px;
-        min-height: calc(100vh - 88px);
-      }
+        font-size: 14px; /* Reduz o texto para mobile */
+        min-height: calc(100vh - 88px); /* Ajustado para mobile */
+    }
 
-      .textbox {
+    .textbox {
         min-width: 60px;
         min-height: 30px;
         padding: 5px;
-      }
+    }
 
-      td {
+    td {
         min-width: 30px;
         padding: 3px;
-      }
     }
-  </style>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto&family=Open+Sans&family=Lato&family=VT323&display=swap" rel="stylesheet">
+}
+
+/* Media Queries para notebooks/desktops (acima de 768px) */
+@media (min-width: 769px) {
+    .toolbar {
+        padding: 10px;
+        gap: 10px;
+        flex-wrap: nowrap; /* Mantém os botões em uma linha */
+        top: 8px; /* Mantém o afastamento de 8px da borda superior */
+        left: 10px; /* Mantém o afastamento de 10px */
+        right: 10px; /* Mantém o afastamento de 10px */
+        border-radius: 8px; /* Mantém os cantos arredondados */
+    }
+
+    .toolbar button, .toolbar select {
+        padding: 5px;
+        min-width: 30px;
+        height: 30px;
+    }
+
+    .toolbar select {
+        font-size: 12px;
+        max-width: none; /* Remove limite de largura */
+    }
+
+    .editor {
+        margin-top: 68px; /* Ajustado para o afastamento de 8px + altura da toolbar */
+        padding: 20px;
+        font-size: 16px;
+    }
+
+    .textbox {
+        min-width: 100px;
+        min-height: 50px;
+        padding: 10px;
+    }
+
+    td {
+        min-width: 50px;
+        padding: 5px;
+    }
+}
+
+
+
+    </style>
 </head>
 <body>
-  <div class="toolbar">
-    <button id="boldBtn" title="Negrito"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M6 4h8a4 4 0 0 1 4 4v1a4 4 0 0 1-4 4H6z"/><path d="M6 12h9a4 4 0 0 1 4 4v1a4 4 0 0 1-4 4H6z"/></svg></button>
-    <button id="italicBtn" title="Itálico"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M19 4h-6l-4 16h6"/></svg></button>
-    <button id="highlightBtn" title="Grifar"><svg width="24" height="24" viewBox="0 0 24 24"><path d="M4 20h16l-2-8H6z"/></svg></button>
-    <button id="colorBtn" title="Cor do texto"><svg width="24" height="24" viewBox="0 0 24 24"><path d="M12 2a10 10 0 0 0-10 10h20A10 10 0 0 0 12 2z"/></svg></button>
-    <select id="fontSize"><option value="12">12px</option><option value="16" selected>16px</option><option value="20">20px</option><option value="24">24px</option></select>
-    <select id="fontFamily">
-      <option value="Arial">Arial</option><option value="Times New Roman">Times New Roman</option>
-      <option value="Courier New">Courier New</option><option value="Georgia">Georgia</option>
-      <option value="Verdana">Verdana</option><option value="Helvetica">Helvetica</option>
-      <option value="Trebuchet MS">Trebuchet MS</option><option value="Comic Sans MS">Comic Sans MS</option>
-      <option value="Impact">Impact</option><option value="Roboto">Roboto</option>
-      <option value="Open Sans">Open Sans</option><option value="Lato">Lato</option>
-      <option value="VT323">VT323</option>
-    </select>
-    <button id="linkBtn" title="Adicionar link"><svg width="24" height="24" viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></button>
-    <button id="tableBtn" title="Adicionar tabela"><svg width="24" height="24" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="12" y1="3" x2="12" y2="21"/><line x1="3" y1="12" x2="21" y2="12"/></svg></button>
-    <button id="textboxBtn" title="Adicionar caixa de texto"><svg width="24" height="24" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="8" y1="8" x2="16" y2="8"/><line x1="8" y1="12" x2="16" y2="12"/></svg></button>
-    <button id="imageBtn" title="Inserir imagem"><svg width="24" height="24" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg></button>
-    <select id="pageSize"><option value="a4">A4</option><option value="letter">Letter</option><option value="legal">Legal</option></select>
-    <button id="downloadBtn" title="Baixar PDF"><svg width="24" height="24" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></button>
-    <button id="shareBtn" title="Compartilhar PDF"><svg width="24" height="24" viewBox="0 0 24 24"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg></button>
-  </div>
+    <div class="toolbar">
+       <!-- Botão de expansão (somente mobile) -->
+        <button id="boldBtn" title="Negrito">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path d="M6 4h8a4 4 0 0 1 4 4v1a4 4 0 0 1-4 4H6z" />
+                <path d="M6 12h9a4 4 0 0 1 4 4v1a4 4 0 0 1-4 4H6z" />
+            </svg>
+        </button>
+        <button id="italicBtn" title="Itálico">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path d="M19 4h-6l-4 16h6" />
+            </svg>
+        </button>
+        <button id="highlightBtn" title="Grifar">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path d="M4 20h16l-2-8H6z" />
+            </svg>
+        </button>
+        <button id="colorBtn" title="Cor do texto">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path d="M12 2a10 10 0 0 0-10 10h20A10 10 0 0 0 12 2z" />
+            </svg>
+        </button>
+        <select id="fontSize" title="Tamanho da fonte">
+            <option value="2" >2px</option>
+            <option value="4" >4px</option>
+            <option value="6" >6px</option>
+            <option value="8" >8px</option>
+            <option value="12">12px</option>
+            <option value="16" selected>16px</option>
+            <option value="20">20px</option>
+            <option value="24">24px</option>
+            <option value="28" >28px</option>
+            <option value="30" >30px</option>       
+            <option value="32" >32px</option>
+            <option value="34" >34px</option>
+            <option value="36" >36px</option>
+            <option value="38" >38px</option>
+            <option value="40" >40px</option>
+            <option value="42" >42px</option>
+            <option value="44" >44px</option>
+            <option value="46" >46px</option>
+            <option value="48" >48px</option>
+            <option value="50" >50px</option>
+        </select>
+        <select id="fontFamily" title="Fonte">
+            <option value="Arial">Arial</option>
+            <option value="Times New Roman">Times New Roman</option>
+            <option value="Courier New">Courier New</option>
+            <option value="Georgia">Georgia</option>
+            <option value="Verdana">Verdana</option>
+            <option value="Helvetica">Helvetica</option>
+            <option value="Trebuchet MS">Trebuchet MS</option>
+            <option value="Comic Sans MS">Comic Sans MS</option>
+            <option value="Impact">Impact</option>
+            <option value="Roboto">Roboto</option>
+            <option value="Open Sans">Open Sans</option>
+            <option value="Lato">Lato</option>
+            <option value="VT323">VT323</option> <!-- Adicionada a fonte VT323 -->
+        </select>
+        <button id="linkBtn" title="Adicionar link">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" />
+                <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" />
+            </svg>
+        </button>
+        <button id="tableBtn" title="Adicionar tabela">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <rect x="3" y="3" width="18" height="18" rx="2" />
+                <line x1="12" y1="3" x2="12" y2="21" />
+                <line x1="3" y1="12" x2="21" y2="12" />
+            </svg>
+        </button>
+        <button id="textboxBtn" title="Adicionar caixa de texto">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <rect x="3" y="3" width="18" height="18" rx="2" />
+                <line x1="8" y1="8" x2="16" y2="8" />
+                <line x1="8" y1="12" x2="16" y2="12" />
+            </svg>
+        </button>
+        <button id="imageBtn" title="Inserir imagem">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <rect x="3" y="3" width="18" height="18" rx="2" />
+                <circle cx="8.5" cy="8.5" r="1.5" />
+                <path d="M21 15l-5-5L5 21" />
+            </svg>
+        </button>
+        <select id="pageSize" title="Tamanho da folha">
+            <option value="a4">A4</option>
+            <option value="letter">Letter</option>
+            <option value="legal">Legal</option>
+        </select>
+        <button id="downloadBtn" title="Baixar PDF">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                <polyline points="7 10 12 15 17 10" />
+                <line x1="12" y1="15" x2="12" y2="3" />
+            </svg>
+        </button>
+        <button id="shareBtn" title="Compartilhar PDF">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8" />
+                <polyline points="16 6 12 2 8 6" />
+                <line x1="12" y1="2" x2="12" y2="15" />
+            </svg>
+        </button>
+        <button id="toggleToolbar" class="toggle-toolbar" title="Expandir/Encolher Barra">
+   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+      <path d="M4 6h16M4 12h16M4 18h16" />
+   </svg>
+</button>
+    </div>
+    <div contenteditable="true" id="editor" class="editor"></div>
+    <input type="file" id="imageInput" accept="image/*" style="display: none;">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.23/jspdf.plugin.autotable.min.js"></script>
+    <script>
+       const { jsPDF } = window.jspdf;
+const editor = document.getElementById('editor');
+const boldBtn = document.getElementById('boldBtn');
+const italicBtn = document.getElementById('italicBtn');
+const highlightBtn = document.getElementById('highlightBtn');
+const colorBtn = document.getElementById('colorBtn');
+const fontSize = document.getElementById('fontSize');
+const fontFamily = document.getElementById('fontFamily');
+const linkBtn = document.getElementById('linkBtn');
+const tableBtn = document.getElementById('tableBtn');
+const textboxBtn = document.getElementById('textboxBtn');
+const imageBtn = document.getElementById('imageBtn');
+const pageSize = document.getElementById('pageSize');
+const downloadBtn = document.getElementById('downloadBtn');
+const shareBtn = document.getElementById('shareBtn');
+const imageInput = document.getElementById('imageInput');
 
-  <div contenteditable="true" id="editor" class="editor"></div>
-  <input type="file" id="imageInput" accept="image/*" style="display: none;">
+// Funções de formatação
+boldBtn.onclick = () => document.execCommand('bold', false, null);
+italicBtn.onclick = () => document.execCommand('italic', false, null);
+highlightBtn.onclick = () => document.execCommand('backColor', false, 'yellow');
+colorBtn.onclick = () => {
+   const color = prompt('Digite uma cor (ex: red, #ff0000):');
+   if (color) document.execCommand('foreColor', false, color);
+};
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.23/jspdf.plugin.autotable.min.js"></script>
-  <script>
-    const { jsPDF } = window.jspdf;
-    const editor = document.getElementById('editor');
-    const boldBtn = document.getElementById('boldBtn');
-    const italicBtn = document.getElementById('italicBtn');
-    const highlightBtn = document.getElementById('highlightBtn');
-    const colorBtn = document.getElementById('colorBtn');
-    const fontSize = document.getElementById('fontSize');
-    const fontFamily = document.getElementById('fontFamily');
-    const linkBtn = document.getElementById('linkBtn');
-    const tableBtn = document.getElementById('tableBtn');
-    const textboxBtn = document.getElementById('textboxBtn');
-    const imageBtn = document.getElementById('imageBtn');
-    const pageSize = document.getElementById('pageSize');
-    const downloadBtn = document.getElementById('downloadBtn');
-    const shareBtn = document.getElementById('shareBtn');
-    const imageInput = document.getElementById('imageInput');
+fontSize.onchange = () => document.execCommand('fontSize', false, fontSize.value / 4);
+fontFamily.onchange = () => document.execCommand('fontName', false, fontFamily.value);
 
-    boldBtn.onclick = () => document.execCommand('bold');
-    italicBtn.onclick = () => document.execCommand('italic');
-    highlightBtn.onclick = () => document.execCommand('backColor', false, 'yellow');
-    colorBtn.onclick = () => {
-      const color = prompt('Digite uma cor (ex: red, #ff0000):');
-      if (color) document.execCommand('foreColor', false, color);
-    };
+linkBtn.onclick = () => {
+   const url = prompt('Digite o URL:');
+   if (url) document.execCommand('createLink', false, url);
+};
 
-    fontSize.onchange = () => document.execCommand('fontSize', false, fontSize.value / 4);
-    fontFamily.onchange = () => document.execCommand('fontName', false, fontFamily.value);
-
-    linkBtn.onclick = () => {
-      const url = prompt('Digite o URL:');
-      if (url) document.execCommand('createLink', false, url);
-    };
-
-    tableBtn.onclick = () => {
-      const rows = prompt('Número de linhas:');
-      const cols = prompt('Número de colunas:');
-      if (rows && cols) {
-        const table = document.createElement('table');
-        for (let i = 0; i < rows; i++) {
-          const tr = document.createElement('tr');
-          for (let j = 0; j < cols; j++) {
+tableBtn.onclick = () => {
+   const rows = prompt('Número de linhas:');
+   const cols = prompt('Número de colunas:');
+   if (rows && cols) {
+      const table = document.createElement('table');
+      for (let i = 0; i < rows; i++) {
+         const tr = document.createElement('tr');
+         for (let j = 0; j < cols; j++) {
             const td = document.createElement('td');
             td.contentEditable = true;
             td.textContent = ' ';
             tr.appendChild(td);
-          }
-          table.appendChild(tr);
-        }
-        editor.appendChild(table);
+         }
+         table.appendChild(tr);
       }
-    };
+      editor.appendChild(table);
+   }
+};
 
-    textboxBtn.onclick = () => {
-      const textbox = document.createElement('div');
-      textbox.className = 'textbox';
-      textbox.contentEditable = true;
-      textbox.textContent = 'Caixa de texto';
-      editor.appendChild(textbox);
-    };
+textboxBtn.onclick = () => {
+   const textbox = document.createElement('div');
+   textbox.className = 'textbox';
+   textbox.contentEditable = true;
+   textbox.textContent = 'Caixa de texto';
+   editor.appendChild(textbox);
+};
 
-    imageBtn.onclick = () => imageInput.click();
-    imageInput.onchange = (e) => {
-      const file = e.target.files[0];
-      if (file) {
-        const reader = new FileReader();
-        reader.onload = (event) => {
-          const img = document.createElement('img');
-          img.src = event.target.result;
-          img.style.maxWidth = '200px';
-          editor.appendChild(img);
-        };
-        reader.readAsDataURL(file);
-      }
-    };
+imageBtn.onclick = () => imageInput.click();
+imageInput.onchange = (e) => {
+   const file = e.target.files[0];
+   if (file) {
+      const reader = new FileReader();
+      reader.onload = (event) => {
+         const img = document.createElement('img');
+         img.src = event.target.result;
+         img.style.maxWidth = '250px';
+         editor.appendChild(img);
+      };
+      reader.readAsDataURL(file);
+   }
+};
 
-    function generatePDF(action) {
-      const doc = new jsPDF({ format: pageSize.value });
-      let y = 10;
-
-      const processNode = (node) => {
-        if (node.nodeType === 3) {
-          const text = node.textContent.trim();
-          if (text) {
+// Função para gerar PDF
+function generatePDF(action) {
+   const doc = new jsPDF({ format: pageSize.value });
+   let y = 10;
+   
+   const processNode = (node) => {
+      if (node.nodeType === 3) { // Texto simples
+         const text = node.textContent.trim();
+         if (text) {
             const style = window.getComputedStyle(node.parentElement);
             doc.setFont(style.fontFamily.replace(/['"]/g, ''));
             doc.setFontSize(parseInt(style.fontSize));
@@ -256,55 +391,56 @@
             if (style.color) doc.setTextColor(style.color);
             doc.text(text, 10, y);
             y += 10;
-          }
-        } else if (node.nodeName === 'IMG') {
-          const canvas = document.createElement('canvas');
-          canvas.width = node.width;
-          canvas.height = node.height;
-          canvas.getContext('2d').drawImage(node, 0, 0);
-          const imgData = canvas.toDataURL('image/png');
-          doc.addImage(imgData, 'PNG', 10, y, 50, 50);
-          y += 60;
-        } else if (node.nodeName === 'TABLE') {
-          const rows = Array.from(node.rows).map(row =>
+         }
+      } else if (node.nodeName === 'IMG') {
+         const canvas = document.createElement('canvas');
+         canvas.width = node.width;
+         canvas.height = node.height;
+         canvas.getContext('2d').drawImage(node, 0, 0);
+         const imgData = canvas.toDataURL('image/png');
+         doc.addImage(imgData, 'PNG', 10, y, 50, 50);
+         y += 60;
+      } else if (node.nodeName === 'TABLE') {
+         const rows = Array.from(node.rows).map(row =>
             Array.from(row.cells).map(cell => cell.textContent)
-          );
-          doc.autoTable({ startY: y, body: rows });
-          y = doc.lastAutoTable.finalY + 10;
-        } else if (node.className === 'textbox') {
-          doc.rect(10, y - 5, 100, 20);
-          doc.text(node.textContent, 12, y);
-          y += 25;
-        } else if (node.nodeName === 'A') {
-          doc.setTextColor(0, 0, 255);
-          doc.textWithLink(node.textContent, 10, y, { url: node.href });
-          y += 10;
-        }
-        if (node.childNodes) node.childNodes.forEach(processNode);
-      };
-
-      editor.childNodes.forEach(processNode);
-
-      if (action === 'download') {
-        doc.save('documento.pdf');
-      } else if (action === 'share') {
-        const pdfBlob = doc.output('blob');
-        const file = new File([pdfBlob], 'documento.pdf', { type: 'application/pdf' });
-        if (navigator.share) {
-          navigator.share({
+         );
+         doc.autoTable({ startY: y, body: rows });
+         y = doc.lastAutoTable.finalY + 10;
+      } else if (node.className === 'textbox') {
+         doc.rect(10, y - 5, 100, 20);
+         doc.text(node.textContent, 12, y);
+         y += 25;
+      } else if (node.nodeName === 'A') {
+         doc.setTextColor(0, 0, 255); // Azul para links
+         doc.textWithLink(node.textContent, 10, y, { url: node.href });
+         y += 10;
+      }
+      if (node.childNodes) node.childNodes.forEach(processNode);
+   };
+   
+   editor.childNodes.forEach(processNode);
+   
+   if (action === 'download') {
+      doc.save('documento.pdf');
+   } else if (action === 'share') {
+      const pdfBlob = doc.output('blob');
+      const file = new File([pdfBlob], 'documento.pdf', { type: 'application/pdf' });
+      if (navigator.share) {
+         navigator.share({
             files: [file],
             title: 'Meu PDF',
             text: 'Confira meu documento PDF!',
-          }).catch(console.error);
-        } else {
-          alert('Compartilhamento não suportado neste navegador.');
-        }
+         }).catch(console.error);
+      } else {
+         alert('Compartilhamento não suportado neste navegador.');
       }
-    }
+   }
+}
 
-    downloadBtn.onclick = () => generatePDF('download');
-    shareBtn.onclick = () => generatePDF('share');
-    editor.focus();
-  </script>
+downloadBtn.onclick = () => generatePDF('download');
+shareBtn.onclick = () => generatePDF('share');
+
+
+    </script>
 </body>
-</html>
+  </html> 
