@@ -307,7 +307,7 @@ td {
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.23/jspdf.plugin.autotable.min.js"></script>
     <script>
-       const { jsPDF } = window.jspdf;
+    const { jsPDF } = window.jspdf;
 const editor = document.getElementById('editor');
 const boldBtn = document.getElementById('boldBtn');
 const italicBtn = document.getElementById('italicBtn');
@@ -392,20 +392,36 @@ imageInput.onchange = (e) => {
 function generatePDF(action) {
    const doc = new jsPDF({ format: pageSize.value });
    let y = 10;
-   
+
+   // Altura máxima da página (em mm) com margens
+   const pageHeight = doc.internal.pageSize.getHeight();
+   const marginBottom = 10; // Margem inferior
+   const maxY = pageHeight - marginBottom;
+
    const processNode = (node) => {
       if (node.nodeType === 3) { // Texto simples
          const text = node.textContent.trim();
          if (text) {
             const style = window.getComputedStyle(node.parentElement);
-            doc.setFont(style.fontFamily.replace(/['"]/g, ''));
+            doc.setFont(style.fontFamily.replace(/['"]/g, ''), 'normal');
             doc.setFontSize(parseInt(style.fontSize));
-            if (style.fontWeight === 'bold') doc.setFont(undefined, 'bold');
+            if (style.fontWeight >= 700 || style.fontWeight === 'bold') doc.setFont(undefined, 'bold');
             if (style.fontStyle === 'italic') doc.setFont(undefined, 'italic');
             if (style.backgroundColor !== 'rgba(0, 0, 0, 0)') doc.setFillColor(style.backgroundColor);
             if (style.color) doc.setTextColor(style.color);
-            doc.text(text, 10, y);
-            y += 10;
+
+            // Verifica se o texto cabe na página atual
+            const textLines = doc.splitTextToSize(text, doc.internal.pageSize.getWidth() - 20);
+            const lineHeight = parseInt(style.fontSize) / 2; // Aproximação para altura da linha
+
+            textLines.forEach(line => {
+               if (y + lineHeight > maxY) {
+                  doc.addPage();
+                  y = 10; // Reseta a posição y para o topo da nova página
+               }
+               doc.text(line, 10, y);
+               y += lineHeight;
+            });
          }
       } else if (node.nodeName === 'IMG') {
          const canvas = document.createElement('canvas');
@@ -413,28 +429,55 @@ function generatePDF(action) {
          canvas.height = node.height;
          canvas.getContext('2d').drawImage(node, 0, 0);
          const imgData = canvas.toDataURL('image/png');
+
+         // Verifica se a imagem cabe na página
+         const imgHeight = 50; // Altura fixa da imagem no PDF
+         if (y + imgHeight > maxY) {
+            doc.addPage();
+            y = 10;
+         }
          doc.addImage(imgData, 'PNG', 10, y, 50, 50);
-         y += 60;
+         y += imgHeight + 10;
       } else if (node.nodeName === 'TABLE') {
          const rows = Array.from(node.rows).map(row =>
             Array.from(row.cells).map(cell => cell.textContent)
          );
+
+         // Verifica se a tabela cabe na página
+         const tableHeightEstimate = rows.length * 10; // Estimativa de altura da tabela
+         if (y + tableHeightEstimate > maxY) {
+            doc.addPage();
+            y = 10;
+         }
          doc.autoTable({ startY: y, body: rows });
          y = doc.lastAutoTable.finalY + 10;
       } else if (node.className === 'textbox') {
+         // Verifica se a caixa de texto cabe na página
+         const textboxHeight = 25; // Altura fixa da caixa de texto
+         if (y + textboxHeight > maxY) {
+            doc.addPage();
+            y = 10;
+         }
          doc.rect(10, y - 5, 100, 20);
          doc.text(node.textContent, 12, y);
-         y += 25;
+         y += textboxHeight;
       } else if (node.nodeName === 'A') {
+         // Verifica se o link cabe na página
+         const linkHeight = 10; // Altura fixa do link
+         if (y + linkHeight > maxY) {
+            doc.addPage();
+            y = 10;
+         }
          doc.setTextColor(0, 0, 255); // Azul para links
          doc.textWithLink(node.textContent, 10, y, { url: node.href });
-         y += 10;
+         y += linkHeight;
       }
+
       if (node.childNodes) node.childNodes.forEach(processNode);
    };
-   
+
    editor.childNodes.forEach(processNode);
-   
+
    if (action === 'download') {
       doc.save('documento.pdf');
    } else if (action === 'share') {
@@ -454,8 +497,6 @@ function generatePDF(action) {
 
 downloadBtn.onclick = () => generatePDF('download');
 shareBtn.onclick = () => generatePDF('share');
-
-
-    </script>
+   </script>
 </body>
-    </html> 
+    </html>  
