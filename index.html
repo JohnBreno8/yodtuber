@@ -1,507 +1,596 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hayd.editorPDF</title>
-    <!-- Carregando fontes do Google Fonts, incluindo VT323 -->
-    <link href="https://fonts.googleapis.com/css2?family=Roboto&family=Open+Sans&family=Lato&family=VT323&display=swap" rel="stylesheet">
-    <link rel="icon" type="image/png" href="Screenshot_20250411-180805-414.png">
-    <style>
-       body {
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hittogram Lite</title>
+  <link rel="icon" type="image/png" href="/mídias/favicon/anônimato e conexão com redes criptografadas para mensagens, fundo preto, detalhes em branco, estilo minimalista, logo de um símbolo.png.jpg">
+  <style>
+    /* Reset e configurações globais */
+* {
     margin: 0;
+    padding: 0;
+    box-sizing: border-box;
     font-family: Arial, sans-serif;
-    overflow-x: hidden;
+}
+
+body {
+    background-color: #000000;
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
+}
+
+/* Container principal do chat */
+.chat-container {
+    width: 100%;
+    height: 100%;
+    max-width: 800px;
+    background-color: #000000C9;
+    display: flex;
+    flex-direction: column;
+    border-radius: 10px;
+    background-image: url("/mídias /fundos /figgures /claro/e0283ea861dd8693b441dd42d769b441.jpg ");
+        background-size: 100%; /* Um pouco maior que o container para permitir movimento */
+}
+
+/* Cabeçalho do Chat */
+.chat-header {
+    background-color: #00000078;
+    backdrop-filter: blur(8px); /* efeito borrado sutil */
+    padding: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
     
 }
 
-.toolbar {
-    position: fixed;
-    top: 3px; /* Afastamento de 8px da borda superior */
-    left: 10px; /* Afastamento de 10px da borda esquerda */
-    right: 10px; /* Afastamento de 10px da borda direita */
-    background: #333;
-    padding: 5px;
-    display: flex;
-    flex-wrap: wrap; /* Permite que os botões quebrem linha em telas pequenas */
-    gap: 5px; /* Reduzido para telas menores */
-    z-index: 1000;
-    justify-content: center; /* Centraliza os botões */
-    border-radius: 8px; /* Cantos arredondados */
+/* Nome do chat */
+.chat-header p {
+    font-size: 20px;
+    font-weight: bold;
 }
 
-.toolbar button, .toolbar select {
-    background: none;
-    border: none;
-    color: white;
-    cursor: pointer;
-    padding: 3px;
-    transition: background 0.3s;
-    min-width: 35px; /* Garante que os botões sejam clicáveis em telas pequenas */
-    height: 30px;
+/* Área dos botões */
+.button-img {
     display: flex;
     align-items: center;
-    justify-content: center;
 }
 
-.toolbar select {
-    background: #555;
-    border-radius: 4px; /* Mantém cantos arredondados no select */
-    padding: 2px;
-    font-size: 12px; /* Tamanho ajustado para mobile */
-    height: 30px;
-}
-
-.toolbar button:hover, .toolbar select:hover {
-    background: #555;
-}
-
-.editor {
-    margin-top: 58px; /* Ajustado para o novo afastamento de 8px + altura da toolbar */
-    padding: 10px; /* Ajustado para mobile */
-    min-height: calc(100vh - 68px); /* Ajustado para o novo afastamento */
-    border: 1px solid #333333;
-    outline: none;
-    white-space: pre-wrap;
-    font-size: 16px; /* Tamanho base para legibilidade */
-    box-sizing: border-box;
-}
-
-.highlight {
-    background-color: #00FF08A1;
-}
-
-.textbox {
-    border: 1px solid #000000;
-    padding: 8px;
-    display: inline-block;
-    min-width: 80px; /* Ajustado para mobile */
-    min-height: 40px;
-    box-sizing: border-box;
-}
-
-table {
-    border-collapse: collapse;
-    margin: 10px 0;
-    width: 100%; /* Garante que a tabela se ajuste à largura do editor */
-}
-
-td {
-    border: 1px solid #000;
+/* Estilizando os botões */
+.button-img button {
+    background: none;
+    border: 2px solid #00000078;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-left: 10px;
     padding: 5px;
-    min-width: 40px; /* Ajustado para mobile */
-    box-sizing: border-box;
+    transition: 0.3s;
+    backdrop-filter: blur(8px); /* efeito borrado sutil */
 }
 
-/* Media Queries para dispositivos móveis */
-@media (max-width: 768px) {
-    .toolbar {
-        padding: 3px;
-        gap: 3px;
-        flex-wrap: wrap; /* Garante que os botões se ajustem */
-        top: 7px; /* Mantém o afastamento de 8px da borda superior */
-        left: 10px; /* Mantém o afastamento de 10px */
-        right: 10px; /* Mantém o afastamento de 10px */
-        border-radius: 9px; /* Mantém os cantos arredondados */
-    }
-
-    .toolbar button, .toolbar select {
-        padding: 1px;
-        min-width: 1px;
-        height: 30px;
-        width: 25px
-    }
-
-    .toolbar select {
-        font-size: 8px;
-        max-width: 83px; /* Limita a largura do select em mobile */
-        background-color: #242424E6;
-    }
-
-    .editor {
-        margin-top: 64px; /* Ajustado para o afastamento de 8px + altura da toolbar em mobile */
-        padding: 8px;
-        font-size: 15px; /* Reduz o texto para mobile */
-        min-height: calc(100vh - 88px); /* Ajustado para mobile */
-    }
-
-    .textbox {
-        min-width: 60px;
-        min-height: 30px;
-        padding: 5px;
-    }
-
-    td {
-        min-width: 30px;
-        padding: 3px;
-    }
+.button-img button:hover {
+    background-color: #FFFFFF00;
 }
 
-/* Media Queries para notebooks/desktops (acima de 768px) */
-@media (min-width: 769px) {
-    .toolbar {
-        padding: 10px;
-        gap: 10px;
-        flex-wrap: nowrap; /* Mantém os botões em uma linha */
-        top: 8px; /* Mantém o afastamento de 8px da borda superior */
-        left: 10px; /* Mantém o afastamento de 10px */
-        right: 10px; /* Mantém o afastamento de 10px */
-        border-radius: 8px; /* Mantém os cantos arredondados */
-    }
-
-    .toolbar button, .toolbar select {
-        padding: 5px;
-        min-width: 30px;
-        height: 30px;
-    }
-
-    .toolbar select {
-        font-size: 12px;
-        max-width: none; /* Remove limite de largura */
-    }
-
-    .editor {
-        margin-top: 68px; /* Ajustado para o afastamento de 8px + altura da toolbar */
-        padding: 20px;
-        font-size: 16px;
-    }
-
-    .textbox {
-        min-width: 100px;
-        min-height: 50px;
-        padding: 10px;
-    }
-
-    td {
-        min-width: 50px;
-        padding: 5px;
-    }
+/* Ícones dentro dos botões */
+.button-img img {
+    width: 24px;
+    filter: brightness(0) invert(1);
 }
 
+/* Ajuste da imagem de perfil */
+#Perfiluser {
+    width: 45px; /* Aumenta o tamanho */
+    height: 45px;
+    border-radius: 50%;
+    border: 3px solid #B2B2B29E; /* Adiciona contorno branco */
+    margin-left: 15px;
+    background-color: #FFFFFF00;
+}
 
+/* Área do Chat (Mensagens) */
+.chat-box {
+    flex: 1;
+    padding: 15px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    scroll-behavior: smooth;
+    margin-bottom: 65px; /* Espaço para a barra flutuante */
+}
 
-    </style>
+/* Estilizando mensagens */
+.message {
+    max-width: 75%;
+    padding: 12px;
+    margin-bottom: 10px;
+    border-radius: 10px;
+    font-size: 14px;
+    line-height: 1.4;
+}
+
+.user-message {
+    align-self: flex-end;
+    background-color: #2C2C2C54;
+    color: white;
+    border-top-right-radius: 0;
+    backdrop-filter: blur(8px); /* Efeito de desfoque */
+}
+
+.bot-message {
+    align-self: flex-start;
+    background-color: #444;
+    color: white;
+    border-top-left-radius: 0;
+}
+
+/* Barra de entrada flutuante */
+.chat-input {
+    position: fixed;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 440px;
+    max-width: 800px;
+    display: flex;
+    align-items: center;
+    background-color: #0000004A;
+    backdrop-filter: blur(8px); /* efeito borrado sutil */
+    padding: 10px;
+    border-radius: 15px;
+}
+
+.chat-input input[type="text"] {
+    flex: 1;
+    padding: 12px;
+    border: 1px solid #FFFFFF;
+    border-radius: 10px;
+    color: #DFFFFB;
+    font-size: 14px;
+    outline: none;
+    margin-right: 10px;
+    background-color: #5E5E5E00;
+    backdrop-filter: blur(8px); /* efeito borrado sutil */
+}
+
+/* Estilizando botões da barra de entrada */
+.chat-input button {
+    background: none;
+    border: 1px solid #CDCDCD94;
+    border-radius: 8px;
+    cursor: pointer;
+    padding: 6px;
+    transition: 0.4s;
+    background-color: #00000042;
+    backdrop-filter: blur(5px); /* efeito borrado sutil */
+    margin-left: 3px;
+}
+
+/* Remove a margem do primeiro botão */
+.chat-input button:first-child {
+    margin-left: 0;
+} 
+
+.chat-input button:hover {
+    background-color: #FFFFFF17;
+    backdrop-filter: blur(30px); /* efeito borrado sutil */
+}
+
+.chat-input img {
+    width: 26px;
+    filter: brightness(0) invert(1);
+}
+
+/* Scrollbar customizada */
+.chat-box::-webkit-scrollbar {
+    width: 8px;
+}
+
+.chat-box::-webkit-scrollbar-thumb {
+    background: #444;
+    border-radius: 5px;
+}
+
+.chat-box::-webkit-scrollbar-track {
+    background: #000000;
+}
+ 
+  </style>
+  
 </head>
+
 <body>
-    <div class="toolbar">
-       <!-- Botão de expansão (somente mobile) -->
-        <button id="boldBtn" title="Negrito">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                <path d="M6 4h8a4 4 0 0 1 4 4v1a4 4 0 0 1-4 4H6z" />
-                <path d="M6 12h9a4 4 0 0 1 4 4v1a4 4 0 0 1-4 4H6z" />
-            </svg>
+  <div id="charLimitAlert" class="char-limit-alert"></div>
+  <div class="chat-container">
+    <div class="chat-header">
+      <p>Hittogram</p>
+      <div class="button-img">
+        <button onclick="voltar()">
+          <!-- Ícone Voltar -->
+          <svg width="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
         </button>
-        <button id="italicBtn" title="Itálico">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                <path d="M19 4h-6l-4 16h6" />
-            </svg>
+        <button onclick="ligar()">
+          <!-- Ícone Telefone -->
+          <svg width="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M22 16.92V19a2 2 0 0 1-2.18 2A19.77 19.77 0 0 1 3 5.18 2 2 0 0 1 5 3h2.09a2 2 0 0 1 2 1.72 13.09 13.09 0 0 0 .57 2.57 2 2 0 0 1-.45 2.11L8.1 10.91a16 16 0 0 0 5 5l1.51-1.51a2 2 0 0 1 2.11-.45 13.09 13.09 0 0 0 2.57.57 2 2 0 0 1 1.71 2z"/></svg>
         </button>
-        <button id="highlightBtn" title="Grifar">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                <path d="M4 20h16l-2-8H6z" />
-            </svg>
+        <button onclick="chamada()">
+          <!-- Ícone Vídeo -->
+          <svg width="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M23 7l-7 5 7 5V7z"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
         </button>
-        <button id="colorBtn" title="Cor do texto">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                <path d="M12 2a10 10 0 0 0-10 10h20A10 10 0 0 0 12 2z" />
-            </svg>
-        </button>
-        <select id="fontSize" title="Tamanho da fonte">
-            <option value="2" >2px</option>
-            <option value="4" >4px</option>
-            <option value="6" >6px</option>
-            <option value="8" >8px</option>
-            <option value="12">12px</option>
-            <option value="16" selected>16px</option>
-            <option value="20">20px</option>
-            <option value="24">24px</option>
-            <option value="28" >28px</option>
-            <option value="30" >30px</option>       
-            <option value="32" >32px</option>
-            <option value="34" >34px</option>
-            <option value="36" >36px</option>
-            <option value="38" >38px</option>
-            <option value="40" >40px</option>
-            <option value="42" >42px</option>
-            <option value="44" >44px</option>
-            <option value="46" >46px</option>
-            <option value="48" >48px</option>
-            <option value="50" >50px</option>
-        </select>
-        <select id="fontFamily" title="Fonte">
-            <option value="Arial">Arial</option>
-            <option value="Times New Roman">Times New Roman</option>
-            <option value="Courier New">Courier New</option>
-            <option value="Georgia">Georgia</option>
-            <option value="Verdana">Verdana</option>
-            <option value="Helvetica">Helvetica</option>
-            <option value="Trebuchet MS">Trebuchet MS</option>
-            <option value="Comic Sans MS">Comic Sans MS</option>
-            <option value="Impact">Impact</option>
-            <option value="Roboto">Roboto</option>
-            <option value="Open Sans">Open Sans</option>
-            <option value="Lato">Lato</option>
-            <option value="VT323">VT323</option> <!-- Adicionada a fonte VT323 -->
-        </select>
-        <button id="linkBtn" title="Adicionar link">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" />
-                <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" />
-            </svg>
-        </button>
-        <button id="tableBtn" title="Adicionar tabela">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                <rect x="3" y="3" width="18" height="18" rx="2" />
-                <line x1="12" y1="3" x2="12" y2="21" />
-                <line x1="3" y1="12" x2="21" y2="12" />
-            </svg>
-        </button>
-        <button id="textboxBtn" title="Adicionar caixa de texto">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                <rect x="3" y="3" width="18" height="18" rx="2" />
-                <line x1="8" y1="8" x2="16" y2="8" />
-                <line x1="8" y1="12" x2="16" y2="12" />
-            </svg>
-        </button>
-        <button id="imageBtn" title="Inserir imagem">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                <rect x="3" y="3" width="18" height="18" rx="2" />
-                <circle cx="8.5" cy="8.5" r="1.5" />
-                <path d="M21 15l-5-5L5 21" />
-            </svg>
-        </button>
-        <select id="pageSize" title="Tamanho da folha">
-            <option value="a4">A4</option>
-            <option value="letter">Letter</option>
-            <option value="legal">Legal</option>
-        </select>
-        <button id="downloadBtn" title="Baixar PDF">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-                <polyline points="7 10 12 15 17 10" />
-                <line x1="12" y1="15" x2="12" y2="3" />
-            </svg>
-        </button>
-        <button id="shareBtn" title="Compartilhar PDF">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8" />
-                <polyline points="16 6 12 2 8 6" />
-                <line x1="12" y1="2" x2="12" y2="15" />
-            </svg>
-        </button>
-        <button id="undoBtn" title="Desfazer">
-   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-      <path d="M3 9h10a6 6 0 0 1 6 6v0a6 6 0 0 1-6 6H9" />
-      <path d="M3 9L7 5M3 9L7 13" />
-   </svg>
-</button>
-<button id="redoBtn" title="Refazer">
-   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-      <path d="M21 9H11a6 6 0 0 0-6 6v0a6 6 0 0 0 6 6h4" />
-      <path d="M21 9L17 5M21 9L17 13" />
-   </svg>
-</button>
+        <svg id="Perfiluser" width="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><circle cx="12" cy="7" r="4"/><path d="M5.5 21a8.38 8.38 0 0 1 13 0"/></svg>
+      </div>
     </div>
-    <div contenteditable="true" id="editor" class="editor"></div>
-    <input type="file" id="imageInput" accept="image/*" style="display: none;">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.23/jspdf.plugin.autotable.min.js"></script>
-    <script>
-const { jsPDF } = window.jspdf;
-const editor = document.getElementById('editor');
-const boldBtn = document.getElementById('boldBtn');
-const italicBtn = document.getElementById('italicBtn');
-const highlightBtn = document.getElementById('highlightBtn');
-const colorBtn = document.getElementById('colorBtn');
-const fontSize = document.getElementById('fontSize');
-const fontFamily = document.getElementById('fontFamily');
-const linkBtn = document.getElementById('linkBtn');
-const tableBtn = document.getElementById('tableBtn');
-const textboxBtn = document.getElementById('textboxBtn');
-const imageBtn = document.getElementById('imageBtn');
-const pageSize = document.getElementById('pageSize');
-const downloadBtn = document.getElementById('downloadBtn');
-const shareBtn = document.getElementById('shareBtn');
-const imageInput = document.getElementById('imageInput');
-const undoBtn = document.getElementById('undoBtn');
-const redoBtn = document.getElementById('redoBtn');
 
-undoBtn.onclick = () => document.execCommand('undo', false, null);
-redoBtn.onclick = () => document.execCommand('redo', false, null);
+    <div class="chat-box" id="chatBox"></div>
 
-// Funções de formatação
-boldBtn.onclick = () => document.execCommand('bold', false, null);
-italicBtn.onclick = () => document.execCommand('italic', false, null);
-highlightBtn.onclick = () => document.execCommand('backColor', false, 'yellow');
-colorBtn.onclick = () => {
-    const color = prompt('Digite uma cor (ex: red, #ff0000):');
-    if (color) document.execCommand('foreColor', false, color);
-};
+    <div class="chat-input">
+      <input type="text" id="messageInput" placeholder="Digite ..." onkeypress="handleKeyPress(event)">
+      <input type="file" id="fileInput" hidden>
 
-fontSize.onchange = () => document.execCommand('fontSize', false, fontSize.value / 4);
-fontFamily.onchange = () => document.execCommand('fontName', false, fontFamily.value);
+      <button onclick="sendMessage()">
+        <!-- Ícone Enviar -->
+        <svg width="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M22 2L11 13"/><path d="M22 2l-6 20-4-9-9-4 20-7z"/></svg>
+      </button>
+      <button onclick="selectFile()">
+        <!-- Ícone Arquivo -->
+        <svg width="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+      </button>
+      <button onclick="toggleRecording(this)">
+        <!-- Ícone Microfone -->
+        <svg width="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M12 1v22"/><path d="M5 8v2a7 7 0 0 0 14 0V8"/><rect x="9" y="2" width="6" height="11" rx="3"/></svg>
+      </button>
+    </div>
+  </div>
 
-linkBtn.onclick = () => {
-    const url = prompt('Digite o URL:');
-    if (url) document.execCommand('createLink', false, url);
-};
+  <script>
+    // Selecionando elementos do DOM
+const chatBox = document.getElementById("chatBox");
+const messageInput = document.getElementById("messageInput");
+const fileInput = document.getElementById("fileInput");
 
-tableBtn.onclick = () => {
-    const rows = prompt('Número de linhas:');
-    const cols = prompt('Número de colunas:');
-    if (rows && cols) {
-        const table = document.createElement('table');
-        for (let i = 0; i < rows; i++) {
-            const tr = document.createElement('tr');
-            for (let j = 0; j < cols; j++) {
-                const td = document.createElement('td');
-                td.contentEditable = true;
-                td.textContent = ' ';
-                tr.appendChild(td);
-            }
-            table.appendChild(tr);
-        }
-        editor.appendChild(table);
-    }
-};
+// Variável para controlar o tempo de toque longo
+let touchTimer = null;
 
-textboxBtn.onclick = () => {
-    const textbox = document.createElement('div');
-    textbox.className = 'textbox';
-    textbox.contentEditable = true;
-    textbox.textContent = 'Caixa de texto';
-    editor.appendChild(textbox);
-};
+// Função para enviar mensagens de texto
+function sendMessage() {
+    const messageText = messageInput.value.trim();
+    if (messageText === "") return;
 
-imageBtn.onclick = () => imageInput.click();
-imageInput.onchange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-        const reader = new FileReader();
-        reader.onload = (event) => {
-            const img = document.createElement('img');
-            img.src = event.target.result;
-            img.style.maxWidth = '250px';
-            editor.appendChild(img);
-        };
-        reader.readAsDataURL(file);
-    }
-};
+    // Criando um elemento de mensagem do usuário
+    const messageElement = document.createElement("div");
+    messageElement.classList.add("message", "user-message");
+    messageElement.innerText = messageText;
 
-// Função para gerar PDF
-function generatePDF(action, fileName = 'documento.pdf') {
-    const doc = new jsPDF({ format: pageSize.value });
-    let y = 10;
-    
-    // Altura máxima da página (em mm) com margens
-    const pageHeight = doc.internal.pageSize.getHeight();
-    const marginBottom = 10; // Margem inferior
-    const maxY = pageHeight - marginBottom;
-    
-    const processNode = (node) => {
-        if (node.nodeType === 3) { // Texto simples
-            const text = node.textContent.trim();
-            if (text) {
-                const style = window.getComputedStyle(node.parentElement);
-                doc.setFont(style.fontFamily.replace(/['"]/g, ''), 'normal');
-                doc.setFontSize(parseInt(style.fontSize));
-                if (style.fontWeight >= 700 || style.fontWeight === 'bold') doc.setFont(undefined, 'bold');
-                if (style.fontStyle === 'italic') doc.setFont(undefined, 'italic');
-                if (style.backgroundColor !== 'rgba(0, 0, 0, 0)') doc.setFillColor(style.backgroundColor);
-                if (style.color) doc.setTextColor(style.color);
-                
-                // Verifica se o texto cabe na página atual
-                const textLines = doc.splitTextToSize(text, doc.internal.pageSize.getWidth() - 20);
-                const lineHeight = parseInt(style.fontSize) / 2; // Aproximação para altura da linha
-                
-                textLines.forEach(line => {
-                    if (y + lineHeight > maxY) {
-                        doc.addPage();
-                        y = 10; // Reseta a posição y para o topo da nova página
-                    }
-                    doc.text(line, 10, y);
-                    y += lineHeight;
-                });
-            }
-        } else if (node.nodeName === 'IMG') {
-            const canvas = document.createElement('canvas');
-            canvas.width = node.width;
-            canvas.height = node.height;
-            canvas.getContext('2d').drawImage(node, 0, 0);
-            const imgData = canvas.toDataURL('image/png');
-            
-            // Verifica se a imagem cabe na página
-            const imgHeight = 50; // Altura fixa da imagem no PDF
-            if (y + imgHeight > maxY) {
-                doc.addPage();
-                y = 10;
-            }
-            doc.addImage(imgData, 'PNG', 10, y, 50, 50);
-            y += imgHeight + 10;
-        } else if (node.nodeName === 'TABLE') {
-            const rows = Array.from(node.rows).map(row =>
-                Array.from(row.cells).map(cell => cell.textContent)
-            );
-            
-            // Verifica se a tabela cabe na página
-            const tableHeightEstimate = rows.length * 10; // Estimativa de altura da tabela
-            if (y + tableHeightEstimate > maxY) {
-                doc.addPage();
-                y = 10;
-            }
-            doc.autoTable({ startY: y, body: rows });
-            y = doc.lastAutoTable.finalY + 10;
-        } else if (node.className === 'textbox') {
-            // Verifica se a caixa de texto cabe na página
-            const textboxHeight = 25; // Altura fixa da caixa de texto
-            if (y + textboxHeight > maxY) {
-                doc.addPage();
-                y = 10;
-            }
-            doc.rect(10, y - 5, 100, 20);
-            doc.text(node.textContent, 12, y);
-            y += textboxHeight;
-        } else if (node.nodeName === 'A') {
-            // Verifica se o link cabe na página
-            const linkHeight = 10; // Altura fixa do link
-            if (y + linkHeight > maxY) {
-                doc.addPage();
-                y = 10;
-            }
-            doc.setTextColor(0, 0, 255); // Azul para links
-            doc.textWithLink(node.textContent, 10, y, { url: node.href });
-            y += linkHeight;
-        }
+    // Adiciona funcionalidade de toque longo para apagar
+    addDeleteFeature(messageElement);
+
+    // Adicionando a mensagem ao chat
+    chatBox.appendChild(messageElement);
+
+    // Limpar campo de entrada
+    messageInput.value = "";
+
+    // Rolar para a última mensagem
+    chatBox.scrollTop = chatBox.scrollHeight;
+}
+
+// Função para abrir seletor de arquivo
+function selectFile() {
+    fileInput.click();
+}
+
+// Evento de mudança para exibir pré-visualização do arquivo
+fileInput.addEventListener("change", function () {
+    const file = fileInput.files[0];
+    if (!file) return;
+
+    const fileType = file.type.split("/")[0];
+
+    // Criando mensagem de arquivo
+    const fileMessage = document.createElement("div");
+    fileMessage.classList.add("message", "user-message");
+
+    if (fileType === "image") {
+        // Criar e exibir imagem
+        const imgElement = document.createElement("img");
+        imgElement.src = URL.createObjectURL(file);
+        imgElement.style.maxWidth = "250px";
+        imgElement.style.borderRadius = "5px";
+        imgElement.style.marginTop = "5px";
+        imgElement.style.cursor = "pointer";
         
-        if (node.childNodes) node.childNodes.forEach(processNode);
-    };
-    
-    editor.childNodes.forEach(processNode);
-    
-    if (action === 'download') {
-        doc.save(fileName);
-    } else if (action === 'share') {
-        const pdfBlob = doc.output('blob');
-        const file = new File([pdfBlob], fileName, { type: 'application/pdf' });
-        if (navigator.share) {
-            navigator.share({
-                files: [file],
-                title: 'Meu PDF',
-                text: 'Confira meu documento PDF!',
-            }).catch(console.error);
-        } else {
-            alert('Compartilhamento não suportado neste navegador.');
-        }
+        // Abrir imagem em nova aba ao clicar
+        imgElement.onclick = () => window.open(imgElement.src);
+
+        fileMessage.appendChild(imgElement);
+    } else if (fileType === "video") {
+        // Criar e exibir vídeo
+        const videoElement = document.createElement("video");
+        videoElement.src = URL.createObjectURL(file);
+        videoElement.controls = true;
+        videoElement.style.maxWidth = "250px";
+        videoElement.style.borderRadius = "5px";
+        videoElement.style.marginTop = "5px";
+
+        fileMessage.appendChild(videoElement);
+    } else {
+        // Criar link de download para outros arquivos
+        const fileLink = document.createElement("a");
+        fileLink.href = URL.createObjectURL(file);
+        fileLink.target = "_blank";
+        fileLink.innerText = `📎 ${file.name}`;
+        fileLink.style.color = "#fff";
+
+        fileMessage.appendChild(fileLink);
+    }
+
+    // Adicionar funcionalidade de toque longo para apagar
+    addDeleteFeature(fileMessage);
+
+    // Adicionar a mensagem ao chat
+    chatBox.appendChild(fileMessage);
+
+    // Rolar para a última mensagem
+    chatBox.scrollTop = chatBox.scrollHeight;
+});
+
+// Função para apagar mensagens ao pressionar por 8 segundos
+function addDeleteFeature(element) {
+    element.addEventListener("touchstart", function () {
+        touchTimer = setTimeout(() => {
+            replaceWithDeletedMessage(element);
+        }, 5000); // 5 segundos
+    });
+
+    element.addEventListener("touchend", function () {
+        clearTimeout(touchTimer);
+    });
+
+    element.addEventListener("mousedown", function () {
+        touchTimer = setTimeout(() => {
+            replaceWithDeletedMessage(element);
+        }, 5000); //  segundos
+    });
+
+    element.addEventListener("mouseup", function () {
+        clearTimeout(touchTimer);
+    });
+
+    element.addEventListener("mouseleave", function () {
+        clearTimeout(touchTimer);
+    });
+}
+
+// Função para substituir a mensagem por "Esta mensagem foi apagada."
+function replaceWithDeletedMessage(element) {
+    const deletedMessage = document.createElement("div");
+    deletedMessage.classList.add("message", "deleted-message");
+    deletedMessage.innerText = ".          Esta mensagem foi apagada.";
+
+    // Substitui a mensagem original pela mensagem de "apagada"
+    element.parentNode.replaceChild(deletedMessage, element);
+}
+
+// Enviar mensagem ao pressionar "Enter"
+function handleKeyPress(event) {
+    if (event.key === "Enter") {
+        sendMessage();
     }
 }
 
-downloadBtn.onclick = () => {
-    const fileName = prompt('Digite o nome do arquivo (sem extensão):', 'documento');
-    const finalFileName = fileName && fileName.trim() ? `${fileName.trim()}.pdf` : 'documento.pdf';
-    generatePDF('download', finalFileName);
+// Gravação de áudio
+let mediaRecorder;
+let audioChunks = [];
+
+function toggleRecording(button) {
+    if (!mediaRecorder || mediaRecorder.state === "inactive") {
+        startRecording(button);
+    } else {
+        stopRecording(button);
+    }
+}
+
+function startRecording(button) {
+    navigator.mediaDevices.getUserMedia({ audio: true })
+        .then(stream => {
+            mediaRecorder = new MediaRecorder(stream);
+            mediaRecorder.start();
+            audioChunks = [];
+
+            mediaRecorder.ondataavailable = event => {
+                audioChunks.push(event.data);
+            };
+
+            button.style.backgroundColor = "#ff4444"; // Indicador de gravação ativa
+        })
+        .catch(error => console.error("Erro ao acessar microfone:", error));
+}
+
+function stopRecording(button) {
+    mediaRecorder.stop();
+    mediaRecorder.onstop = () => {
+        const audioBlob = new Blob(audioChunks, { type: "audio/mp3" });
+        const audioUrl = URL.createObjectURL(audioBlob);
+
+        const audioMessage = document.createElement("div");
+        audioMessage.classList.add("message", "user-message");
+
+        const audioElement = document.createElement("audio");
+        audioElement.src = audioUrl;
+        audioElement.controls = true;
+
+        audioMessage.appendChild(audioElement);
+        chatBox.appendChild(audioMessage);
+
+        // Adicionar funcionalidade de toque longo para apagar
+        addDeleteFeature(audioMessage);
+
+        // Rolar para a última mensagem
+        chatBox.scrollTop = chatBox.scrollHeight;
+    };
+
+    button.style.backgroundColor = ""; // Voltar ao normal
+}
+
+// Funções para botões (simples alertas, ajuste conforme necessário)
+function voltar() { alert("Voltando..."); }
+function menu() { alert("Abrindo menu..."); }
+function ligar() { alert("Iniciando chamada de voz..."); }
+function chamada() { alert("Iniciando chamada de vídeo..."); }
+
+// Função para substituir a mensagem por "Esta mensagem foi apagada."
+function replaceWithDeletedMessage(element, isUserMessage) {
+   const deletedMessage = document.createElement("div");
+   deletedMessage.classList.add("message", "deleted-message");
+   
+   // Mensagem de apagado
+//   deletedMessage.innerText = "ㅤㅤㅤㅤㅤㅤ o usuário apagou //mensagem  🤫.";
+   // Define a mensagem
+deletedMessage.innerText = "o usuário apagou mensagem.";
+
+// Salva o estilo original (posição anterior)
+const originalStyle = {
+   position: deletedMessage.style.position,
+   top: deletedMessage.style.top,
+   left: deletedMessage.style.left,
+   transform: deletedMessage.style.transform
 };
 
-shareBtn.onclick = () => generatePDF('share');
-   </script>
+// Estilo inicial centralizado com fundo e texto vermelho
+deletedMessage.style.position = "fixed";
+deletedMessage.style.top = "50%";
+deletedMessage.style.left = "50%";
+deletedMessage.style.transform = "translate(-50%, -50%)";
+deletedMessage.style.backgroundColor = "#2e2e2e";
+deletedMessage.style.color = "red"; // vermelho forte
+deletedMessage.style.fontStyle = "italic";
+deletedMessage.style.fontSize = "16px";
+deletedMessage.style.padding = "12px 20px";
+deletedMessage.style.borderRadius = "12px";
+deletedMessage.style.boxShadow = "0 4px 12px rgba(0,0,0,0.4)";
+deletedMessage.style.zIndex = "9999";
+deletedMessage.style.transition = "all 0.5s ease";
+
+// Após 5 segundos, remove fundo e volta ao lugar original
+setTimeout(() => {
+   deletedMessage.style.backgroundColor = "transparent";
+   deletedMessage.style.boxShadow = "none";
+   deletedMessage.style.color = "#8B0000"; // vermelho escuro
+   deletedMessage.style.position = originalStyle.position || "static";
+   deletedMessage.style.top = originalStyle.top || "";
+   deletedMessage.style.left = originalStyle.left || "";
+   deletedMessage.style.transform = originalStyle.transform || "";
+   deletedMessage.style.zIndex = "";
+}, 2000);
+
+// Após 20 segundos, remove completamente
+setTimeout(() => {
+   deletedMessage.style.opacity = "0";
+   deletedMessage.style.transition = "opacity 1s ease";
+   setTimeout(() => {
+      deletedMessage.remove();
+   }, 1000);
+}, 20000);
+   // Adicionar classe de posição conforme o autor da mensagem apagada
+   if (isUserMessage) {
+      deletedMessage.classList.add("user-deleted");
+   } else {
+      deletedMessage.classList.add("other-deleted");
+   }
+   
+   // Substitui a mensagem original pela mensagem de "apagada"
+   element.parentNode.replaceChild(deletedMessage, element);
+}
+
+// Função para adicionar a funcionalidade de apagar (com toque longo)
+function addDeleteFeature(element, isUserMessage) {
+   element.addEventListener("touchstart", function() {
+      touchTimer = setTimeout(() => {
+         replaceWithDeletedMessage(element, isUserMessage);
+      }, 5000); // 8 segundos
+   });
+   
+   element.addEventListener("touchend", function() {
+      clearTimeout(touchTimer);
+   });
+   
+   element.addEventListener("mousedown", function() {
+      touchTimer = setTimeout(() => {
+         replaceWithDeletedMessage(element, isUserMessage);
+      }, 5000); // 8 segundos
+   });
+   
+   element.addEventListener("mouseup", function() {
+      clearTimeout(touchTimer);
+   });
+   
+   element.addEventListener("mouseleave", function() {
+      clearTimeout(touchTimer);
+   });
+}
+
+// Função para enviar mensagens de texto (exemplo de como adicionar isUserMessage)
+function sendMessage() {
+   const messageText = messageInput.value.trim();
+   if (messageText === "") return;
+   
+   const messageElement = document.createElement("div");
+   messageElement.classList.add("message", "user-message");
+   messageElement.innerText = messageText;
+   
+   // Adiciona a função de apagar com o controle se foi do usuário ou outro
+   addDeleteFeature(messageElement, true); // true para mensagem do usuário atual
+   
+   chatBox.appendChild(messageElement);
+   messageInput.value = "";
+   chatBox.scrollTop = chatBox.scrollHeight;
+}
+
+// Exemplo para mensagens do outro usuário (simulando)
+function simulateOtherUserMessage() {
+   const messageElement = document.createElement("div");
+   messageElement.classList.add("message", "other-message");
+   messageElement.innerText = "Mensagem do outro usuário";
+   
+   // Adiciona a função de apagar com o controle se foi do usuário ou outro
+   addDeleteFeature(messageElement, false); // false para mensagem do outro usuário
+   
+   chatBox.appendChild(messageElement);
+   chatBox.scrollTop = chatBox.scrollHeight;
+}
+
+// Variáveis para controle de inatividade e visibilidade da página
+let isPageVisible = true;
+let inactivityTimer = null;
+let lastVisibilityChange = Date.now();
+
+// Função para detectar mudança de visibilidade da página
+function monitorScreenCapture() {
+   // Detecta quando a aba da página perde foco (quando o usuário minimiza, muda a guia, etc.)
+   document.addEventListener("visibilitychange", function() {
+      if (document.hidden) {
+         // Armazena o tempo da última mudança de visibilidade
+         lastVisibilityChange = Date.now();
+         isPageVisible = false;
+      } else {
+         isPageVisible = true;
+         clearTimeout(inactivityTimer); // Limpa o timer de inatividade
+      }
+   });
+   
+   // Monitorar inatividade na página para garantir que o usuário tenha ficado por um tempo sem interagir
+   window.addEventListener("blur", handleInactivity);
+   window.addEventListener("focus", handleInactivity);
+}
+
+
+  </script>
 </body>
-</html>  
+</html> 
