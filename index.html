@@ -1261,7 +1261,8 @@ function loadRecommendedVideosFallback(videoId) {
         gapi.client.youtube.search.list({
             part: 'snippet',
             q: query,
-            maxResults: 4,
+            //so isso mesmo 🙂 da próxima eu faço uma atualização grande
+            maxResults: 20,
             type: 'video',
             videoType: 'any'
         }).then(response => {
