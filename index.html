@@ -15,7 +15,7 @@
 }
 
 body {
-    background-color: #0F0F0F;
+    background: linear-gradient(9000deg, #000000, #222222, #1A1A1A, #404040);
     color: #F1F1F1;
     padding-bottom: 80px;
     overflow-x: hidden;
@@ -27,7 +27,7 @@ body {
     position: fixed;
     top: 0;
     width: 100%;
-    background: rgba(18, 18, 18, 0.95);
+    background: #0000009C;
     padding: 12px 24px;
     z-index: 1000;
     display: flex;
@@ -41,8 +41,9 @@ body {
 .header h4 {
     font-size: 22px;
     font-weight: 600;
-    color: #00E676;
     letter-spacing: 0.5px;
+    right: 8% ;
+    position: relative ;
 }
 
 .header button {
@@ -83,7 +84,7 @@ button[onclick="refreshPage()"] {
     left: 0;
     width: 260px;
     height: 100%;
-    background: rgba(18, 18, 18, 0.95);
+    background: linear-gradient(50deg, #00000080, #03030380, #1A1A1A80, #40404080);;
     transform: translateX(-100%);
     transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     z-index: 2000;
@@ -113,11 +114,11 @@ button[onclick="refreshPage()"] {
 
 #sidebar button:hover {
     background: rgba(255, 255, 255, 0.1);
-    color: #00E676;
+    color: #000000;
 }
 
 #sidebar .close-sidebar {
-    background: #FF0000;
+    background: #00FF2987;
     color: #FFF;
     border-radius: 8px;
     text-align: center;
@@ -131,7 +132,7 @@ button[onclick="refreshPage()"] {
     left: 0;
     right: 0;
     height: 64px;
-    background: rgba(18, 18, 18, 0.95);
+    background: #0000009C;
     display: flex;
     justify-content: space-around;
     align-items: center;
@@ -372,10 +373,11 @@ button[onclick="refreshPage()"] {
     bottom: 0;
     left: 0;
     right: 0;
-    background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
-    padding: 16px 24px;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.78), transparent);
+    padding: 14px 22px;
     transition: opacity 0.3s ease;
     opacity: 1;
+    top: 30%;
 }
 
 .modal-controls.hidden {
@@ -445,7 +447,7 @@ button[onclick="refreshPage()"] {
     color: #FFF;
     border-radius: 6px;
     cursor: pointer;
-    font-size: 14px;
+    font-size: 18px;
     font-weight: 500;
     transition: background 0.2s ease, transform 0.2s ease;
 }
@@ -544,7 +546,7 @@ body.light-mode #shorts-recommendation {
 }
 
 body.light-mode #shorts-recommendation h5 {
-    color: #00C853;
+    color: #6B6B6BBA;
 }
 
 body.light-mode .shorts-card .shorts-title {
@@ -1261,7 +1263,6 @@ function loadRecommendedVideosFallback(videoId) {
         gapi.client.youtube.search.list({
             part: 'snippet',
             q: query,
-            //so isso mesmo 🙂 da próxima eu faço uma atualização grande
             maxResults: 20,
             type: 'video',
             videoType: 'any'
