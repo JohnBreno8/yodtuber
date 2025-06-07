@@ -1099,11 +1099,12 @@
         sidebar.classList.toggle('open');
     }
 
-    function toggleSearch() {
-        const searchContainer = document.getElementById('search-container');
-        searchContainer.style.display = searchContainer.style.display === 'none' ? 'block' : 'none';
-    }
-
+        function toggleSearch() {
+    window.scrollTo({ top: 0, behavior: 'smooth' }); // Rola para o topo suavemente
+    const searchContainer = document.getElementById('search-container');
+    searchContainer.style.display = searchContainer.style.display === 'none' ? 'block' : 'none';
+}
+        
     function refreshPage() {
         closeModal();
         nextPageToken = '';
